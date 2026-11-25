@@ -1,0 +1,882 @@
+{
+  "paletas": [
+    {
+      "nome": "Asfalto Molhado",
+      "fundo": "#1C222B",
+      "preenchimento_1": "#D9E6FF",
+      "preenchimento_2": "#2E8BFF",
+      "contorno": "#090C11",
+      "sombra_3d": "#163C63",
+      "brilho": "#F7FBFF",
+      "destaque": "#8DFF6A",
+      "nevoa": ["#2E8BFF", "#8DFF6A", "#7A8CFF"]
+    },
+    {
+      "nome": "Ferrugem",
+      "fundo": "#33251F",
+      "preenchimento_1": "#FFD08A",
+      "preenchimento_2": "#D95A1A",
+      "contorno": "#140A07",
+      "sombra_3d": "#7B2612",
+      "brilho": "#FFF3DD",
+      "destaque": "#F2B705",
+      "nevoa": ["#D95A1A", "#F2B705", "#8E2E1B"]
+    },
+    {
+      "nome": "Mandrake Roxo",
+      "fundo": "#20172B",
+      "preenchimento_1": "#F7A8FF",
+      "preenchimento_2": "#8A3FFC",
+      "contorno": "#0D0813",
+      "sombra_3d": "#411A76",
+      "brilho": "#FFF0FF",
+      "destaque": "#37E7FF",
+      "nevoa": ["#8A3FFC", "#37E7FF", "#FF59C7"]
+    },
+    {
+      "nome": "Limo Radioativo",
+      "fundo": "#1D2619",
+      "preenchimento_1": "#E9FF75",
+      "preenchimento_2": "#69D84F",
+      "contorno": "#0B1208",
+      "sombra_3d": "#2D6B20",
+      "brilho": "#F9FFD9",
+      "destaque": "#FF8A00",
+      "nevoa": ["#69D84F", "#E9FF75", "#FF8A00"]
+    },
+    {
+      "nome": "Baile Funk",
+      "fundo": "#241B24",
+      "preenchimento_1": "#FFB3D1",
+      "preenchimento_2": "#FF3B8F",
+      "contorno": "#0F0910",
+      "sombra_3d": "#751B48",
+      "brilho": "#FFF4FA",
+      "destaque": "#7CFFDF",
+      "nevoa": ["#FF3B8F", "#7CFFDF", "#A465FF"]
+    },
+    {
+      "nome": "Concreto Seco",
+      "fundo": "#31343A",
+      "preenchimento_1": "#F3F3F3",
+      "preenchimento_2": "#9AA6B2",
+      "contorno": "#111317",
+      "sombra_3d": "#4C5560",
+      "brilho": "#FFFFFF",
+      "destaque": "#FFC857",
+      "nevoa": ["#9AA6B2", "#FFC857", "#5B6672"]
+    },
+    {
+      "nome": "Pixo Verde Água",
+      "fundo": "#172728",
+      "preenchimento_1": "#A9FFF6",
+      "preenchimento_2": "#20C9B7",
+      "contorno": "#081112",
+      "sombra_3d": "#0E6B62",
+      "brilho": "#EFFFFC",
+      "destaque": "#FFD166",
+      "nevoa": ["#20C9B7", "#A9FFF6", "#4D6CFF"]
+    },
+    {
+      "nome": "Pôr do Viaduto",
+      "fundo": "#2F2130",
+      "preenchimento_1": "#FFD8A8",
+      "preenchimento_2": "#FF7B54",
+      "contorno": "#130B14",
+      "sombra_3d": "#813025",
+      "brilho": "#FFF0E1",
+      "destaque": "#6BE6FF",
+      "nevoa": ["#FF7B54", "#6BE6FF", "#FFB703"]
+    },
+    {
+      "nome": "Azul de Quebrada",
+      "fundo": "#142138",
+      "preenchimento_1": "#D4E9FF",
+      "preenchimento_2": "#3B82F6",
+      "contorno": "#080D16",
+      "sombra_3d": "#1D4E89",
+      "brilho": "#F8FCFF",
+      "destaque": "#FF6B6B",
+      "nevoa": ["#3B82F6", "#7DD3FC", "#FF6B6B"]
+    },
+    {
+      "nome": "Noite Dourada",
+      "fundo": "#1E1A16",
+      "preenchimento_1": "#FFE8A3",
+      "preenchimento_2": "#D4A017",
+      "contorno": "#0B0907",
+      "sombra_3d": "#7A5A10",
+      "brilho": "#FFF8D8",
+      "destaque": "#F04E98",
+      "nevoa": ["#D4A017", "#FFE8A3", "#F04E98"]
+    }
+  ],
+  "muros": [
+    {
+      "nome": "azulejo_pichado",
+      "descricao": "Parede de azulejos antigos com rejunte aparente, desgaste, manchas de umidade e pichação suave ao fundo.",
+      "camadas": [
+        {
+          "tipo": "fundo_solido",
+          "cor": "#D7D1C7"
+        },
+        {
+          "tipo": "grade",
+          "cor_linhas": "#B5AEA3",
+          "passo_x_pct": 8,
+          "passo_y_pct": 8,
+          "espessura_px": 2
+        },
+        {
+          "tipo": "manchas_irregulares",
+          "cores": ["#9B948B", "#6E6A64", "#E8E3DA"],
+          "quantidade": 24,
+          "raio_pct_min": 2,
+          "raio_pct_max": 8,
+          "opacidade": 0.16
+        },
+        {
+          "tipo": "pichacoes_textuais",
+          "textos": ["RIMA", "FLOW", "BATALHA", "RUA"],
+          "cores": ["#3B3B3B", "#5A5A5A"],
+          "quantidade": 10,
+          "opacidade": 0.12,
+          "rotacao_min": -25,
+          "rotacao_max": 25
+        },
+        {
+          "tipo": "escorridos",
+          "cor": "#8C867E",
+          "quantidade": 12,
+          "comprimento_pct_min": 4,
+          "comprimento_pct_max": 16,
+          "espessura_px_min": 2,
+          "espessura_px_max": 5,
+          "opacidade": 0.22
+        }
+      ]
+    },
+    {
+      "nome": "lambe_lambe_rasgado",
+      "descricao": "Muro de concreto com cartazes rasgados e sobrepostos, ideal para efeito de rua e colagem urbana.",
+      "camadas": [
+        {
+          "tipo": "fundo_solido",
+          "cor": "#2F3136"
+        },
+        {
+          "tipo": "textura_concreto",
+          "cores": ["#3C3F45", "#202227", "#555962"],
+          "quantidade": 30,
+          "opacidade": 0.18
+        },
+        {
+          "tipo": "retangulos_irregulares",
+          "cores": ["#E7DFC8", "#D2C5A8", "#B38F65", "#F3ECE0"],
+          "quantidade": 18,
+          "largura_pct_min": 12,
+          "largura_pct_max": 28,
+          "altura_pct_min": 8,
+          "altura_pct_max": 18,
+          "rotacao_min": -12,
+          "rotacao_max": 12,
+          "opacidade": 0.32,
+          "bordas_rasgadas": true
+        },
+        {
+          "tipo": "fitas_adesivas",
+          "cores": ["#D7C7A5", "#BDAA83"],
+          "quantidade": 8,
+          "largura_pct_min": 4,
+          "largura_pct_max": 10,
+          "altura_pct_min": 1,
+          "altura_pct_max": 2,
+          "opacidade": 0.55
+        },
+        {
+          "tipo": "respingo_spray",
+          "cores": ["#D94A4A", "#59D9FF", "#FFE066"],
+          "quantidade": 14,
+          "raio_pct_min": 1,
+          "raio_pct_max": 3,
+          "opacidade": 0.22
+        }
+      ]
+    },
+    {
+      "nome": "tapume_madeira_spray",
+      "descricao": "Tapume de madeira com ripas verticais, textura de veios e pintura de spray atravessando em diagonais.",
+      "camadas": [
+        {
+          "tipo": "fundo_solido",
+          "cor": "#4A372C"
+        },
+        {
+          "tipo": "ripas_verticais",
+          "cores": ["#5B4335", "#6A4E3D", "#3F2F27"],
+          "quantidade": 11,
+          "espacamento_px": 4
+        },
+        {
+          "tipo": "veios_madeira",
+          "cor": "#2A1D18",
+          "quantidade": 60,
+          "opacidade": 0.16,
+          "espessura_px_min": 1,
+          "espessura_px_max": 3
+        },
+        {
+          "tipo": "faixas_spray_diagonais",
+          "cores": ["#17D4FF", "#FF4FA3", "#FFD447", "#7EFF6A"],
+          "quantidade": 6,
+          "largura_pct_min": 8,
+          "largura_pct_max": 16,
+          "opacidade": 0.18,
+          "angulo_graus": -22
+        },
+        {
+          "tipo": "arranhoes",
+          "cor": "#C9B19A",
+          "quantidade": 20,
+          "comprimento_pct_min": 2,
+          "comprimento_pct_max": 9,
+          "opacidade": 0.18
+        }
+      ]
+    },
+    {
+      "nome": "grade_noite_neblina",
+      "descricao": "Fundo urbano noturno com grade metálica, névoa e pontos de luz difusos; ótimo para visual mais pesado e moderno.",
+      "camadas": [
+        {
+          "tipo": "fundo_solido",
+          "cor": "#17191E"
+        },
+        {
+          "tipo": "gradiente_radial",
+          "cores": ["#242A34", "#17191E"],
+          "centro_x_pct": 50,
+          "centro_y_pct": 40,
+          "raio_pct": 65
+        },
+        {
+          "tipo": "grade_losangular",
+          "cor_linhas": "#5D6672",
+          "passo_x_pct": 6,
+          "passo_y_pct": 9,
+          "espessura_px": 2,
+          "opacidade": 0.24
+        },
+        {
+          "tipo": "nevoa",
+          "cores": ["#18E0FF", "#FF4FA3", "#FFFFFF"],
+          "quantidade": 8,
+          "raio_pct_min": 10,
+          "raio_pct_max": 24,
+          "opacidade": 0.12
+        },
+        {
+          "tipo": "bokeh_luzes",
+          "cores": ["#18E0FF", "#FFE066", "#FF4FA3"],
+          "quantidade": 16,
+          "raio_pct_min": 1,
+          "raio_pct_max": 3,
+          "opacidade": 0.14
+        }
+      ]
+    }
+  ],
+  "desenhos": [
+    {
+      "nome": "caixa_de_som_empilhada",
+      "descricao": "Duas caixas de som empilhadas, frente reta, com três alto-falantes circulares e alças laterais.",
+      "formas_principais": [
+        "2 retangulos_arredondados empilhados",
+        "6 circulos concentricos para falantes",
+        "2 retangulos finos para alcas",
+        "1 retangulo pequeno para painel superior"
+      ],
+      "detalhes": [
+        "parafusos nos cantos",
+        "grade pontilhada nos cones",
+        "brilho lateral fino"
+      ],
+      "uso_indicado": "cantos inferiores, base de cartaz ou apoio de fotos"
+    },
+    {
+      "nome": "bone_reto_aba_alta",
+      "descricao": "Boné reto em 3/4, aba larga, costuras visíveis e adesivo circular simples na aba.",
+      "formas_principais": [
+        "1 semicirculo para copa",
+        "1 quadrilatero curvo para aba",
+        "1 arco para abertura traseira",
+        "linhas curvas para costuras"
+      ],
+      "detalhes": [
+        "botao superior",
+        "respiro em 4 ou 6 pontos",
+        "tag simples sem marca"
+      ],
+      "uso_indicado": "selos, topo ou próximo ao nome da batalha"
+    },
+    {
+      "nome": "tenis_cano_baixo",
+      "descricao": "Tênis street em vista lateral, sola grossa, cadarço aparente e linhas de recorte.",
+      "formas_principais": [
+        "1 poligono principal do corpo",
+        "1 faixa longa para sola",
+        "6 pequenos circulos para ilhoses",
+        "linhas curvas para cadarcos e lingueta"
+      ],
+      "detalhes": [
+        "textura simples na sola",
+        "sombra projetada curta",
+        "estrela ou raio genérico opcional no calcanhar"
+      ],
+      "uso_indicado": "rodapé ou composição com caixa de som e spray"
+    },
+    {
+      "nome": "toca_discos",
+      "descricao": "Pick-up / toca-discos visto de cima, com prato circular, braço e botões retangulares.",
+      "formas_principais": [
+        "1 retangulo base",
+        "1 circulo grande para prato",
+        "1 circulo menor para label",
+        "1 linha angulada para braço",
+        "3 retangulos para botoes/sliders"
+      ],
+      "detalhes": [
+        "sulcos em anel no prato",
+        "agulha pequena na ponta do braço",
+        "luz de status opcional"
+      ],
+      "uso_indicado": "divulgação, topo direito ou faixa lateral"
+    },
+    {
+      "nome": "corrente_medalhao",
+      "descricao": "Corrente grossa com medalhão simples em forma de círculo ou placa retangular arredondada.",
+      "formas_principais": [
+        "10 a 16 elos ovais",
+        "1 circulo ou retangulo_arredondado central para medalhao"
+      ],
+      "detalhes": [
+        "brilho pontual nos elos",
+        "sombra curta sob o medalhao",
+        "sem letras de marca"
+      ],
+      "uso_indicado": "em volta do selo campeão ou como adorno do nome"
+    },
+    {
+      "nome": "mao_com_microfone",
+      "descricao": "Mão segurando microfone, em estilo simplificado de sticker/grafite, com cabo saindo para baixo.",
+      "formas_principais": [
+        "1 cilindro para corpo do microfone",
+        "1 elipse gradeada para cabeça",
+        "4 formas curvas para dedos",
+        "1 linha flexivel para cabo"
+      ],
+      "detalhes": [
+        "contorno grosso",
+        "brilho em 1 lado",
+        "sombra 3D curta"
+      ],
+      "uso_indicado": "arte do campeão, próximo ao nome ou à chave"
+    }
+  ],
+  "layouts": {
+    "divulgacao": [
+      {
+        "nome": "topo_peso_base_limpa",
+        "descricao": "Título dominante no topo, bloco de informações central e tira de fotos dos MCs na base.",
+        "formatos": {
+          "feed": {
+            "area_segura": [6, 4, 88, 92],
+            "elementos": {
+              "logo": { "area": [4, 3, 12, 8], "alinhamento": "esquerda_topo" },
+              "selo_edicao": { "area": [39, 4, 22, 5], "alinhamento": "centro" },
+              "nome_batalha": { "area": [10, 10, 80, 20], "alinhamento": "centro" },
+              "data_hora": { "area": [15, 31, 70, 8], "alinhamento": "centro" },
+              "local": { "area": [17, 39, 66, 6], "alinhamento": "centro" },
+              "premio": { "area": [22, 46, 56, 6], "alinhamento": "centro" },
+              "infos": { "area": [14, 54, 72, 8], "alinhamento": "centro" },
+              "fotos_mcs": { "area": [8, 66, 84, 21], "alinhamento": "centro", "grid_sugerido": "4x1 ou 2x2" },
+              "rodape": { "area": [10, 90, 80, 4], "alinhamento": "centro" },
+              "desenhos_decorativos": [
+                { "nome": "spray", "area": [84, 4, 10, 10], "rotacao": 18 },
+                { "nome": "silhueta_esquerda", "area": [1, 63, 18, 31], "rotacao": 0 },
+                { "nome": "silhueta_direita", "area": [81, 63, 18, 31], "rotacao": 0 }
+              ]
+            }
+          },
+          "story": {
+            "area_segura": [6, 4, 88, 92],
+            "elementos": {
+              "logo": { "area": [4, 3, 12, 6], "alinhamento": "esquerda_topo" },
+              "selo_edicao": { "area": [34, 4, 32, 4], "alinhamento": "centro" },
+              "nome_batalha": { "area": [8, 10, 84, 16], "alinhamento": "centro" },
+              "data_hora": { "area": [14, 28, 72, 6], "alinhamento": "centro" },
+              "local": { "area": [15, 35, 70, 5], "alinhamento": "centro" },
+              "premio": { "area": [18, 42, 64, 5], "alinhamento": "centro" },
+              "infos": { "area": [12, 49, 76, 7], "alinhamento": "centro" },
+              "fotos_mcs": { "area": [8, 60, 84, 25], "alinhamento": "centro", "grid_sugerido": "2x2 ou 4x1" },
+              "rodape": { "area": [10, 90, 80, 3], "alinhamento": "centro" },
+              "desenhos_decorativos": [
+                { "nome": "spray", "area": [84, 4, 10, 8], "rotacao": 18 },
+                { "nome": "silhueta_esquerda", "area": [0, 70, 20, 24], "rotacao": 0 },
+                { "nome": "silhueta_direita", "area": [80, 70, 20, 24], "rotacao": 0 }
+              ]
+            }
+          },
+          "quadrado": {
+            "area_segura": [6, 5, 88, 90],
+            "elementos": {
+              "logo": { "area": [4, 3, 12, 10], "alinhamento": "esquerda_topo" },
+              "selo_edicao": { "area": [38, 4, 24, 6], "alinhamento": "centro" },
+              "nome_batalha": { "area": [10, 12, 80, 18], "alinhamento": "centro" },
+              "data_hora": { "area": [16, 32, 68, 8], "alinhamento": "centro" },
+              "local": { "area": [18, 40, 64, 6], "alinhamento": "centro" },
+              "premio": { "area": [22, 48, 56, 6], "alinhamento": "centro" },
+              "infos": { "area": [15, 56, 70, 7], "alinhamento": "centro" },
+              "fotos_mcs": { "area": [10, 68, 80, 16], "alinhamento": "centro", "grid_sugerido": "4x1" },
+              "rodape": { "area": [10, 89, 80, 4], "alinhamento": "centro" },
+              "desenhos_decorativos": [
+                { "nome": "spray", "area": [84, 4, 10, 10], "rotacao": 18 },
+                { "nome": "silhueta_esquerda", "area": [1, 66, 18, 26], "rotacao": 0 },
+                { "nome": "silhueta_direita", "area": [81, 66, 18, 26], "rotacao": 0 }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "nome": "coluna_esquerda_fotos_direita",
+        "descricao": "Informações em coluna à esquerda, fotos dos MCs em faixa vertical à direita.",
+        "formatos": {
+          "feed": {
+            "area_segura": [6, 4, 88, 92],
+            "elementos": {
+              "logo": { "area": [4, 3, 12, 8], "alinhamento": "esquerda_topo" },
+              "selo_edicao": { "area": [18, 4, 24, 5], "alinhamento": "esquerda" },
+              "nome_batalha": { "area": [8, 12, 54, 22], "alinhamento": "esquerda" },
+              "data_hora": { "area": [9, 36, 46, 8], "alinhamento": "esquerda" },
+              "local": { "area": [9, 45, 46, 7], "alinhamento": "esquerda" },
+              "premio": { "area": [9, 54, 46, 7], "alinhamento": "esquerda" },
+              "infos": { "area": [9, 63, 46, 10], "alinhamento": "esquerda" },
+              "fotos_mcs": { "area": [62, 14, 28, 64], "alinhamento": "centro", "grid_sugerido": "2x2 ou 1x4" },
+              "rodape": { "area": [8, 88, 84, 4], "alinhamento": "centro" },
+              "desenhos_decorativos": [
+                { "nome": "toca_discos", "area": [72, 4, 18, 10], "rotacao": 0 },
+                { "nome": "spray", "area": [82, 79, 10, 11], "rotacao": -18 }
+              ]
+            }
+          },
+          "story": {
+            "area_segura": [6, 4, 88, 92],
+            "elementos": {
+              "logo": { "area": [4, 3, 12, 6], "alinhamento": "esquerda_topo" },
+              "selo_edicao": { "area": [16, 4, 26, 4], "alinhamento": "esquerda" },
+              "nome_batalha": { "area": [8, 10, 52, 18], "alinhamento": "esquerda" },
+              "data_hora": { "area": [9, 30, 44, 6], "alinhamento": "esquerda" },
+              "local": { "area": [9, 37, 44, 5], "alinhamento": "esquerda" },
+              "premio": { "area": [9, 44, 44, 5], "alinhamento": "esquerda" },
+              "infos": { "area": [9, 51, 44, 8], "alinhamento": "esquerda" },
+              "fotos_mcs": { "area": [61, 12, 29, 60], "alinhamento": "centro", "grid_sugerido": "2x2 ou 1x4" },
+              "rodape": { "area": [8, 90, 84, 3], "alinhamento": "centro" },
+              "desenhos_decorativos": [
+                { "nome": "toca_discos", "area": [68, 74, 22, 10], "rotacao": 0 },
+                { "nome": "spray", "area": [84, 4, 10, 8], "rotacao": -18 }
+              ]
+            }
+          },
+          "quadrado": {
+            "area_segura": [6, 5, 88, 90],
+            "elementos": {
+              "logo": { "area": [4, 3, 12, 10], "alinhamento": "esquerda_topo" },
+              "selo_edicao": { "area": [16, 4, 24, 5], "alinhamento": "esquerda" },
+              "nome_batalha": { "area": [8, 11, 52, 18], "alinhamento": "esquerda" },
+              "data_hora": { "area": [9, 31, 44, 7], "alinhamento": "esquerda" },
+              "local": { "area": [9, 39, 44, 6], "alinhamento": "esquerda" },
+              "premio": { "area": [9, 47, 44, 6], "alinhamento": "esquerda" },
+              "infos": { "area": [9, 55, 44, 8], "alinhamento": "esquerda" },
+              "fotos_mcs": { "area": [62, 13, 28, 56], "alinhamento": "centro", "grid_sugerido": "2x2" },
+              "rodape": { "area": [8, 88, 84, 4], "alinhamento": "centro" },
+              "desenhos_decorativos": [
+                { "nome": "toca_discos", "area": [68, 72, 20, 10], "rotacao": 0 },
+                { "nome": "spray", "area": [82, 4, 10, 10], "rotacao": -18 }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "nome": "cartaz_central_colado",
+        "descricao": "Composição de lambe-lambe: o conteúdo principal fica num cartaz central colado no muro.",
+        "formatos": {
+          "feed": {
+            "area_segura": [5, 4, 90, 92],
+            "elementos": {
+              "logo": { "area": [6, 4, 10, 7], "alinhamento": "esquerda_topo" },
+              "cartaz_principal": { "area": [12, 10, 76, 76], "alinhamento": "centro" },
+              "selo_edicao": { "area": [34, 13, 32, 5], "alinhamento": "centro" },
+              "nome_batalha": { "area": [18, 20, 64, 18], "alinhamento": "centro" },
+              "data_hora": { "area": [22, 40, 56, 8], "alinhamento": "centro" },
+              "local": { "area": [24, 49, 52, 6], "alinhamento": "centro" },
+              "premio": { "area": [25, 57, 50, 6], "alinhamento": "centro" },
+              "infos": { "area": [22, 65, 56, 7], "alinhamento": "centro" },
+              "fotos_mcs": { "area": [18, 74, 64, 9], "alinhamento": "centro", "grid_sugerido": "4x1" },
+              "rodape": { "area": [10, 89, 80, 4], "alinhamento": "centro" },
+              "desenhos_decorativos": [
+                { "nome": "fita_adesiva_1", "area": [14, 8, 12, 3], "rotacao": -18 },
+                { "nome": "fita_adesiva_2", "area": [74, 8, 12, 3], "rotacao": 18 },
+                { "nome": "spray", "area": [82, 6, 10, 10], "rotacao": 16 }
+              ]
+            }
+          },
+          "story": {
+            "area_segura": [5, 4, 90, 92],
+            "elementos": {
+              "logo": { "area": [6, 4, 10, 6], "alinhamento": "esquerda_topo" },
+              "cartaz_principal": { "area": [10, 10, 80, 74], "alinhamento": "centro" },
+              "selo_edicao": { "area": [32, 12, 36, 4], "alinhamento": "centro" },
+              "nome_batalha": { "area": [16, 18, 68, 16], "alinhamento": "centro" },
+              "data_hora": { "area": [22, 36, 56, 6], "alinhamento": "centro" },
+              "local": { "area": [24, 44, 52, 5], "alinhamento": "centro" },
+              "premio": { "area": [24, 51, 52, 5], "alinhamento": "centro" },
+              "infos": { "area": [20, 58, 60, 7], "alinhamento": "centro" },
+              "fotos_mcs": { "area": [16, 68, 68, 11], "alinhamento": "centro", "grid_sugerido": "2x2 ou 4x1" },
+              "rodape": { "area": [10, 90, 80, 3], "alinhamento": "centro" },
+              "desenhos_decorativos": [
+                { "nome": "fita_adesiva_1", "area": [12, 8, 12, 2.5], "rotacao": -18 },
+                { "nome": "fita_adesiva_2", "area": [76, 8, 12, 2.5], "rotacao": 18 },
+                { "nome": "spray", "area": [82, 5, 10, 8], "rotacao": 16 }
+              ]
+            }
+          },
+          "quadrado": {
+            "area_segura": [5, 5, 90, 90],
+            "elementos": {
+              "logo": { "area": [6, 4, 10, 8], "alinhamento": "esquerda_topo" },
+              "cartaz_principal": { "area": [11, 11, 78, 72], "alinhamento": "centro" },
+              "selo_edicao": { "area": [34, 14, 32, 5], "alinhamento": "centro" },
+              "nome_batalha": { "area": [17, 21, 66, 16], "alinhamento": "centro" },
+              "data_hora": { "area": [22, 39, 56, 7], "alinhamento": "centro" },
+              "local": { "area": [24, 47, 52, 6], "alinhamento": "centro" },
+              "premio": { "area": [24, 55, 52, 6], "alinhamento": "centro" },
+              "infos": { "area": [20, 63, 60, 6], "alinhamento": "centro" },
+              "fotos_mcs": { "area": [18, 72, 64, 8], "alinhamento": "centro", "grid_sugerido": "4x1" },
+              "rodape": { "area": [10, 88, 80, 4], "alinhamento": "centro" },
+              "desenhos_decorativos": [
+                { "nome": "fita_adesiva_1", "area": [13, 9, 12, 3], "rotacao": -18 },
+                { "nome": "fita_adesiva_2", "area": [75, 9, 12, 3], "rotacao": 18 },
+                { "nome": "spray", "area": [81, 5, 10, 10], "rotacao": 16 }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "nome": "duelo_inferior",
+        "descricao": "Duas figuras/fotos heroicas na base, com nome da batalha no centro e serviços bem organizados acima.",
+        "formatos": {
+          "feed": {
+            "area_segura": [6, 4, 88, 92],
+            "elementos": {
+              "logo": { "area": [4, 3, 12, 8], "alinhamento": "esquerda_topo" },
+              "selo_edicao": { "area": [38, 4, 24, 5], "alinhamento": "centro" },
+              "nome_batalha": { "area": [10, 12, 80, 19], "alinhamento": "centro" },
+              "data_hora": { "area": [18, 33, 64, 8], "alinhamento": "centro" },
+              "local": { "area": [20, 42, 60, 6], "alinhamento": "centro" },
+              "premio": { "area": [23, 50, 54, 6], "alinhamento": "centro" },
+              "infos": { "area": [16, 58, 68, 7], "alinhamento": "centro" },
+              "fotos_mcs": { "area": [6, 67, 88, 21], "alinhamento": "centro", "grid_sugerido": "2x1" },
+              "rodape": { "area": [10, 90, 80, 4], "alinhamento": "centro" },
+              "desenhos_decorativos": [
+                { "nome": "silhueta_esquerda", "area": [0, 62, 22, 32], "rotacao": 0 },
+                { "nome": "silhueta_direita", "area": [78, 62, 22, 32], "rotacao": 0 },
+                { "nome": "corrente_medalhao", "area": [44, 7, 12, 8], "rotacao": 0 }
+              ]
+            }
+          },
+          "story": {
+            "area_segura": [6, 4, 88, 92],
+            "elementos": {
+              "logo": { "area": [4, 3, 12, 6], "alinhamento": "esquerda_topo" },
+              "selo_edicao": { "area": [34, 4, 32, 4], "alinhamento": "centro" },
+              "nome_batalha": { "area": [8, 11, 84, 15], "alinhamento": "centro" },
+              "data_hora": { "area": [17, 28, 66, 6], "alinhamento": "centro" },
+              "local": { "area": [19, 35, 62, 5], "alinhamento": "centro" },
+              "premio": { "area": [21, 42, 58, 5], "alinhamento": "centro" },
+              "infos": { "area": [15, 49, 70, 6], "alinhamento": "centro" },
+              "fotos_mcs": { "area": [8, 61, 84, 25], "alinhamento": "centro", "grid_sugerido": "2x1 ou 2 retratos grandes" },
+              "rodape": { "area": [10, 90, 80, 3], "alinhamento": "centro" },
+              "desenhos_decorativos": [
+                { "nome": "silhueta_esquerda", "area": [0, 68, 21, 26], "rotacao": 0 },
+                { "nome": "silhueta_direita", "area": [79, 68, 21, 26], "rotacao": 0 },
+                { "nome": "corrente_medalhao", "area": [44, 7, 12, 6], "rotacao": 0 }
+              ]
+            }
+          },
+          "quadrado": {
+            "area_segura": [6, 5, 88, 90],
+            "elementos": {
+              "logo": { "area": [4, 3, 12, 10], "alinhamento": "esquerda_topo" },
+              "selo_edicao": { "area": [38, 4, 24, 5], "alinhamento": "centro" },
+              "nome_batalha": { "area": [10, 12, 80, 17], "alinhamento": "centro" },
+              "data_hora": { "area": [18, 31, 64, 7], "alinhamento": "centro" },
+              "local": { "area": [20, 39, 60, 6], "alinhamento": "centro" },
+              "premio": { "area": [22, 47, 56, 6], "alinhamento": "centro" },
+              "infos": { "area": [16, 55, 68, 6], "alinhamento": "centro" },
+              "fotos_mcs": { "area": [8, 64, 84, 18], "alinhamento": "centro", "grid_sugerido": "2x1" },
+              "rodape": { "area": [10, 88, 80, 4], "alinhamento": "centro" },
+              "desenhos_decorativos": [
+                { "nome": "silhueta_esquerda", "area": [0, 66, 21, 25], "rotacao": 0 },
+                { "nome": "silhueta_direita", "area": [79, 66, 21, 25], "rotacao": 0 },
+                { "nome": "corrente_medalhao", "area": [44, 7, 12, 8], "rotacao": 0 }
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "campeao": [
+      {
+        "nome": "campeao_foto_esquerda_chave_direita",
+        "descricao": "Foto do campeão à esquerda, nome em destaque no centro superior e chave vertical à direita/abaixo.",
+        "formatos": {
+          "feed": {
+            "area_segura": [5, 4, 90, 92],
+            "elementos": {
+              "logo": { "area": [4, 3, 12, 8], "alinhamento": "esquerda_topo" },
+              "faixa_info": { "area": [18, 4, 64, 5], "alinhamento": "centro" },
+              "titulo_campeao": { "area": [32, 11, 36, 5], "alinhamento": "centro" },
+              "nome_campeao": { "area": [27, 17, 46, 16], "alinhamento": "centro" },
+              "foto_campeao": { "area": [6, 18, 24, 34], "alinhamento": "centro" },
+              "frase_resultado": { "area": [25, 35, 50, 5], "alinhamento": "centro" },
+              "chave": { "area": [6, 48, 88, 34], "alinhamento": "centro" },
+              "repescagem": { "area": [12, 83, 76, 4], "alinhamento": "centro" },
+              "rodape": { "area": [8, 90, 84, 4], "alinhamento": "centro" },
+              "desenhos_decorativos": [
+                { "nome": "coroa", "area": [26, 14, 8, 6], "rotacao": -12 },
+                { "nome": "mao_com_microfone", "area": [74, 12, 16, 14], "rotacao": 10 },
+                { "nome": "spray", "area": [82, 4, 10, 10], "rotacao": 16 }
+              ]
+            }
+          },
+          "story": {
+            "area_segura": [5, 4, 90, 92],
+            "elementos": {
+              "logo": { "area": [4, 3, 12, 6], "alinhamento": "esquerda_topo" },
+              "faixa_info": { "area": [18, 4, 64, 4], "alinhamento": "centro" },
+              "titulo_campeao": { "area": [31, 10, 38, 4], "alinhamento": "centro" },
+              "nome_campeao": { "area": [26, 15, 48, 14], "alinhamento": "centro" },
+              "foto_campeao": { "area": [6, 18, 24, 26], "alinhamento": "centro" },
+              "frase_resultado": { "area": [24, 30, 52, 4], "alinhamento": "centro" },
+              "chave": { "area": [6, 41, 88, 38], "alinhamento": "centro" },
+              "repescagem": { "area": [12, 81, 76, 3], "alinhamento": "centro" },
+              "rodape": { "area": [8, 90, 84, 3], "alinhamento": "centro" },
+              "desenhos_decorativos": [
+                { "nome": "coroa", "area": [25, 12, 8, 5], "rotacao": -12 },
+                { "nome": "mao_com_microfone", "area": [74, 10, 16, 11], "rotacao": 10 },
+                { "nome": "spray", "area": [82, 4, 10, 8], "rotacao": 16 }
+              ]
+            }
+          },
+          "quadrado": {
+            "area_segura": [5, 5, 90, 90],
+            "elementos": {
+              "logo": { "area": [4, 3, 12, 10], "alinhamento": "esquerda_topo" },
+              "faixa_info": { "area": [18, 4, 64, 5], "alinhamento": "centro" },
+              "titulo_campeao": { "area": [32, 10, 36, 5], "alinhamento": "centro" },
+              "nome_campeao": { "area": [27, 15, 46, 14], "alinhamento": "centro" },
+              "foto_campeao": { "area": [6, 18, 24, 28], "alinhamento": "centro" },
+              "frase_resultado": { "area": [25, 30, 50, 5], "alinhamento": "centro" },
+              "chave": { "area": [6, 40, 88, 36], "alinhamento": "centro" },
+              "repescagem": { "area": [12, 78, 76, 4], "alinhamento": "centro" },
+              "rodape": { "area": [8, 88, 84, 4], "alinhamento": "centro" },
+              "desenhos_decorativos": [
+                { "nome": "coroa", "area": [26, 12, 8, 6], "rotacao": -12 },
+                { "nome": "mao_com_microfone", "area": [74, 10, 16, 12], "rotacao": 10 },
+                { "nome": "spray", "area": [82, 4, 10, 10], "rotacao": 16 }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "nome": "campeao_topo_chave_central",
+        "descricao": "Nome do campeão e foto no topo; chave grande centralizada ocupando a maior parte da metade inferior.",
+        "formatos": {
+          "feed": {
+            "area_segura": [5, 4, 90, 92],
+            "elementos": {
+              "logo": { "area": [4, 3, 12, 8], "alinhamento": "esquerda_topo" },
+              "faixa_info": { "area": [18, 4, 64, 5], "alinhamento": "centro" },
+              "titulo_campeao": { "area": [34, 10, 32, 5], "alinhamento": "centro" },
+              "nome_campeao": { "area": [20, 15, 60, 15], "alinhamento": "centro" },
+              "foto_campeao": { "area": [37, 29, 26, 18], "alinhamento": "centro" },
+              "frase_resultado": { "area": [18, 48, 64, 5], "alinhamento": "centro" },
+              "chave": { "area": [6, 55, 88, 26], "alinhamento": "centro" },
+              "repescagem": { "area": [12, 82, 76, 4], "alinhamento": "centro" },
+              "rodape": { "area": [8, 90, 84, 4], "alinhamento": "centro" },
+              "desenhos_decorativos": [
+                { "nome": "coroa", "area": [45, 11, 10, 7], "rotacao": 0 },
+                { "nome": "mao_com_microfone", "area": [74, 15, 16, 14], "rotacao": 8 },
+                { "nome": "caixa_de_som_empilhada", "area": [6, 14, 12, 16], "rotacao": 0 }
+              ]
+            }
+          },
+          "story": {
+            "area_segura": [5, 4, 90, 92],
+            "elementos": {
+              "logo": { "area": [4, 3, 12, 6], "alinhamento": "esquerda_topo" },
+              "faixa_info": { "area": [18, 4, 64, 4], "alinhamento": "centro" },
+              "titulo_campeao": { "area": [34, 9, 32, 4], "alinhamento": "centro" },
+              "nome_campeao": { "area": [18, 14, 64, 13], "alinhamento": "centro" },
+              "foto_campeao": { "area": [34, 27, 32, 16], "alinhamento": "centro" },
+              "frase_resultado": { "area": [18, 44, 64, 4], "alinhamento": "centro" },
+              "chave": { "area": [6, 50, 88, 31], "alinhamento": "centro" },
+              "repescagem": { "area": [12, 82, 76, 3], "alinhamento": "centro" },
+              "rodape": { "area": [8, 90, 84, 3], "alinhamento": "centro" },
+              "desenhos_decorativos": [
+                { "nome": "coroa", "area": [45, 10, 10, 5], "rotacao": 0 },
+                { "nome": "mao_com_microfone", "area": [74, 13, 16, 11], "rotacao": 8 },
+                { "nome": "caixa_de_som_empilhada", "area": [6, 13, 12, 12], "rotacao": 0 }
+              ]
+            }
+          },
+          "quadrado": {
+            "area_segura": [5, 5, 90, 90],
+            "elementos": {
+              "logo": { "area": [4, 3, 12, 10], "alinhamento": "esquerda_topo" },
+              "faixa_info": { "area": [18, 4, 64, 5], "alinhamento": "centro" },
+              "titulo_campeao": { "area": [34, 9, 32, 5], "alinhamento": "centro" },
+              "nome_campeao": { "area": [18, 14, 64, 12], "alinhamento": "centro" },
+              "foto_campeao": { "area": [36, 27, 28, 16], "alinhamento": "centro" },
+              "frase_resultado": { "area": [18, 44, 64, 5], "alinhamento": "centro" },
+              "chave": { "area": [6, 51, 88, 28], "alinhamento": "centro" },
+              "repescagem": { "area": [12, 80, 76, 4], "alinhamento": "centro" },
+              "rodape": { "area": [8, 88, 84, 4], "alinhamento": "centro" },
+              "desenhos_decorativos": [
+                { "nome": "coroa", "area": [45, 10, 10, 6], "rotacao": 0 },
+                { "nome": "mao_com_microfone", "area": [74, 13, 16, 12], "rotacao": 8 },
+                { "nome": "caixa_de_som_empilhada", "area": [6, 13, 12, 14], "rotacao": 0 }
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  "letras": [
+    {
+      "nome": "cromo_sujo",
+      "estilo_base": "bloco_3d",
+      "preenchimento": {
+        "tipo": "gradiente_linear",
+        "cores": ["#FFFFFF", "#D9D9D9", "#8B8B8B"],
+        "angulo_graus": 90
+      },
+      "contorno": [
+        { "cor": "#111111", "espessura_pct_altura": 8 },
+        { "cor": "#6BE6FF", "espessura_pct_altura": 2 }
+      ],
+      "efeitos": [
+        "brilho_superior_branco",
+        "arranhoes_leves",
+        "sombra_3d_curta",
+        "pingos_controlados"
+      ],
+      "uso_indicado": "nome da batalha e chamadas principais"
+    },
+    {
+      "nome": "wildstyle_duas_tintas",
+      "estilo_base": "wildstyle",
+      "preenchimento": {
+        "tipo": "degrade_duplo",
+        "cores": ["#FFE66D", "#FF7B54", "#FF4FA3"],
+        "angulo_graus": 35
+      },
+      "contorno": [
+        { "cor": "#0F0A08", "espessura_pct_altura": 9 },
+        { "cor": "#FFF4D6", "espessura_pct_altura": 1.8 }
+      ],
+      "efeitos": [
+        "setas_finas",
+        "cortes_internos",
+        "extrusao_3d_media",
+        "escorridos_em_pontos"
+      ],
+      "uso_indicado": "nome do campeão"
+    },
+    {
+      "nome": "throwup_espumado",
+      "estilo_base": "throw_up",
+      "preenchimento": {
+        "tipo": "radial",
+        "cores": ["#FFFFFF", "#C4FF61", "#3DDC97"],
+        "centro_pct": [50, 35]
+      },
+      "contorno": [
+        { "cor": "#111111", "espessura_pct_altura": 10 },
+        { "cor": "#F7FFF7", "espessura_pct_altura": 2 }
+      ],
+      "efeitos": [
+        "bolhas_internas",
+        "reflexo_branco_no_topo",
+        "sombra_3d_lateral",
+        "halo_suave"
+      ],
+      "uso_indicado": "títulos mais divertidos e selos grandes"
+    },
+    {
+      "nome": "neon_recortado",
+      "estilo_base": "bloco_3d",
+      "preenchimento": {
+        "tipo": "solido",
+        "cor": "#141414"
+      },
+      "contorno": [
+        { "cor": "#F7F7F7", "espessura_pct_altura": 4 },
+        { "cor": "#18E0FF", "espessura_pct_altura": 2.5 },
+        { "cor": "#FF4FA3", "espessura_pct_altura": 1.5, "deslocamento_px": [2, 2] }
+      ],
+      "efeitos": [
+        "glow_externo",
+        "sem_3d_longo",
+        "corte_interno_diagonal"
+      ],
+      "uso_indicado": "datas, horários e títulos de apoio"
+    },
+    {
+      "nome": "bloco_fosco_adesivado",
+      "estilo_base": "bloco_3d",
+      "preenchimento": {
+        "tipo": "faixas_diagonais",
+        "cores": ["#FFD166", "#F4A261", "#E76F51"],
+        "largura_faixa_pct": 12
+      },
+      "contorno": [
+        { "cor": "#1A120E", "espessura_pct_altura": 7 },
+        { "cor": "#FFF1D6", "espessura_pct_altura": 1.4 }
+      ],
+      "efeitos": [
+        "sombra_3d_media",
+        "adesivo_com_borda_grossa",
+        "micro_textura_granulada"
+      ],
+      "uso_indicado": "prêmio, selos e subtítulos curtos"
+    }
+  ],
+  "selos": [
+    "TEM BATALHA!",
+    "COLA NA RODA",
+    "MIC ABERTO",
+    "SÓ PEDRADA",
+    "RIMA PESADA",
+    "CHEGA JUNTO",
+    "HOJE É DIA",
+    "QUEM LEVA?",
+    "BATEU, LEVOU",
+    "GERAL CONVOCADA"
+  ]
+}

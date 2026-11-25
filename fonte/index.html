@@ -1,0 +1,243 @@
+<title>Chave de Rima</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Archivo:wght@400;600;800;900&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sedgwick+Ave+Display&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Knewave&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titan+One&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+/* Layout: coluna única de "cartazes" colados num muro; a chave rola na horizontal dentro do próprio quadro */
+:root{
+  --bg:#e6e7ea; --surface:#f8f8f9; --ink:#15161b; --muted:#5b5f6d; --line:#c8cad1;
+  --spray:#c8124f; --spray-ink:#fff; --tape:#f2c230; --tape-ink:#1b1a12; --soft:#eef0f3;
+  --display:"Bowlby One","Arial Black",Impact,sans-serif;
+  --body:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#141519; --surface:#1d1f25; --ink:#eceef3; --muted:#9ba0af; --line:#33363f;
+  --spray:#ff4f8e; --spray-ink:#16070d; --soft:#25282f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141519; --surface:#1d1f25; --ink:#eceef3; --muted:#9ba0af; --line:#33363f;
+  --spray:#ff4f8e; --spray-ink:#16070d; --soft:#25282f; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.45;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+.wrap{max-width:980px;margin:0 auto;display:grid;gap:18px}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(30px,8vw,52px);line-height:.95;margin:0;letter-spacing:.5px}
+h1 span{display:inline-block;background:var(--tape);color:var(--tape-ink);padding:0 .18em;transform:rotate(-2deg)}
+.sub{color:var(--muted);margin:6px 0 0;font-size:14px}
+section{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px;display:grid;gap:14px;min-width:0}
+h2{font-family:var(--display);font-weight:400;font-size:20px;margin:0;letter-spacing:.3px}
+.lbl{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:6px;display:block}
+.seg{display:flex;flex-wrap:wrap;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.seg button{flex:1 1 auto;border:0;background:transparent;color:var(--ink);padding:10px 8px;font:600 14px var(--body);cursor:pointer;border-right:1px solid var(--line)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+select,input[type=number],input[type=text],input[type=date],input[type=time],textarea{width:100%;font:15px var(--body);color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:10px}
+input[type=file]{font:14px var(--body);color:var(--ink);max-width:100%}
+textarea{min-height:150px;resize:vertical}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.btn{border:1px solid var(--ink);background:transparent;color:var(--ink);border-radius:6px;padding:10px 14px;font:700 14px var(--body);cursor:pointer}
+.btn.main{background:var(--spray);border-color:var(--spray);color:var(--spray-ink)}
+.btn.sm{padding:6px 10px;font-size:13px}
+.btn:disabled{opacity:.45;cursor:default}
+.btn:focus-visible,.seg button:focus-visible,.slot:focus-visible,.fase:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--tape);outline-offset:2px}
+.hint{font-size:13px;color:var(--muted);margin:0}
+.plano{font-size:13px;background:var(--soft);border-left:4px solid var(--tape);padding:8px 10px;margin:0;border-radius:0 4px 4px 0}
+.warn{font-size:13px;background:var(--tape);color:var(--tape-ink);padding:6px 10px;border-radius:4px;margin:0}
+.chk{display:flex;gap:8px;align-items:center;font-size:14px}
+.eyebrow{font:700 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--spray)}
+.vs{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;text-align:center}
+.vs .mc{font-family:var(--display);font-size:clamp(18px,5vw,26px);line-height:1.05;overflow-wrap:anywhere}
+.vs .x{font-family:var(--display);color:var(--spray);font-size:22px}
+.fases{display:grid;gap:10px}
+.rd{display:grid;gap:6px}
+.rd b{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.rd .row{gap:6px}
+.fase{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:999px;padding:7px 12px;font:600 13px var(--body);cursor:pointer}
+.fase[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.timer{display:grid;gap:10px;justify-items:center;border:2px dashed var(--line);border-radius:6px;padding:14px}
+.clock{font-family:var(--mono);font-weight:700;font-size:clamp(54px,18vw,88px);line-height:1;font-variant-numeric:tabular-nums}
+.clock.end{color:var(--spray)}
+@keyframes piscar{0%,100%{background:transparent}50%{background:var(--spray);color:var(--spray-ink)}}
+.timer.piscar{animation:piscar .45s ease-in-out 4}
+.timer.piscar .clock{color:inherit}
+.who{font-weight:800;font-size:15px;text-align:center}
+.tema{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end}
+.wins{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.wins>div{display:grid;gap:6px;align-content:start;min-width:0}
+.wins b{overflow-wrap:anywhere}
+.scroll{overflow-x:auto;padding-bottom:6px}
+.bracket{display:flex;gap:22px;min-width:max-content}
+.col{display:flex;flex-direction:column;gap:12px;justify-content:space-around;width:188px}
+.col h3{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 2px;font-weight:700}
+.col.rep h3{color:var(--spray)}
+.match{border:1px solid var(--line);border-radius:6px;background:var(--soft);overflow:hidden}
+.match.cur{border-color:var(--spray);box-shadow:0 0 0 2px var(--spray)}
+.match .mh{display:flex;justify-content:space-between;gap:6px;font-size:11px;color:var(--muted);padding:4px 8px;border-bottom:1px solid var(--line);font-family:var(--mono)}
+.match .mh button{border:0;background:none;color:var(--spray);font:700 11px var(--body);cursor:pointer;padding:0}
+.slot{display:block;width:100%;min-height:44px;text-align:left;border:0;background:transparent;color:var(--ink);padding:10px 10px;font:700 15px var(--body);cursor:pointer;overflow-wrap:anywhere}
+.slot+.slot{border-top:1px solid var(--line)}
+.slot.w{background:var(--spray);color:var(--spray-ink)}
+.slot.l{color:var(--muted);text-decoration:line-through}
+.slot:disabled{cursor:default;color:var(--muted);font-weight:400;font-style:italic}
+.bracket.lista{display:grid;gap:18px;min-width:0}
+.bracket.lista .col{width:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;justify-content:stretch}
+.bracket.lista .col h3{grid-column:1/-1;font-size:13px;padding:6px 0;border-bottom:2px solid var(--line)}
+.bracket.lista .slot{font-size:16px;min-height:48px}
+.des{border:1px solid var(--line);border-radius:6px;padding:10px 12px;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:6px 12px}
+.des legend{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:0 4px}
+.ph{padding:10px;font-size:13px;color:var(--muted);font-style:italic}
+.champ{text-align:center;display:grid;gap:4px;padding:6px 0}
+.champ .n{font-family:var(--display);font-size:clamp(24px,7vw,40px);overflow-wrap:anywhere}
+.champ .n span{background:var(--tape);color:var(--tape-ink);padding:0 .2em}
+.editor{display:grid;gap:10px;border:1px dashed var(--line);border-radius:6px;padding:12px}
+.rrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.rrow b{width:92px;font-size:13px}
+.rrow select,.rrow input{flex:1 1 130px;width:auto}
+.art{display:grid;gap:10px}
+.fotos{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin:8px 0}
+.foto{display:grid;gap:4px;min-width:0}
+.foto img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px;border:1px solid var(--line)}
+.art img{width:100%;max-width:520px;border-radius:6px;display:block;border:1px solid var(--line)}
+@media (prefers-reduced-motion:no-preference){.slot,.fase,.btn{transition:background .15s,color .15s}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Chave de <span>Rima</span></h1>
+    <p class="sub">Monte a chave, cronometre os rounds, marque quem passou e gere os cartazes de divulgação e do campeão.</p>
+  </header>
+
+  <section aria-labelledby="h-conf">
+    <h2 id="h-conf">1 · Configurar</h2>
+    <div>
+      <span class="lbl">Modalidade</span>
+      <div class="seg" id="modo"><button data-v="solo">Individual</button><button data-v="dupla">Dupla</button><button data-v="trio">Trio</button></div>
+    </div>
+    <div>
+      <label class="lbl" for="formato">Formato da batalha</label>
+      <select id="formato"></select>
+      <p class="hint" id="fdesc" style="margin-top:6px"></p>
+    </div>
+    <div class="row" id="fDelBox" hidden><button class="btn sm" id="fDel">Apagar este modelo</button></div>
+    <div id="customBox" hidden class="editor">
+      <div class="row"><label class="lbl" for="cBase" style="margin:0">Partir de</label><select id="cBase" style="flex:1 1 220px;width:auto"></select></div>
+      <div id="cRows" style="display:grid;gap:8px"></div>
+      <button class="btn sm" id="cAdd" style="justify-self:start">+ Adicionar round</button>
+      <label class="chk"><input type="checkbox" id="cDesOn"> Round de desempate (só se empatar)</label>
+      <div id="cDes"></div>
+      <p class="hint">Em <b>Rimas</b>, escreva a sequência do jeito que fala: <b>4x4 - 2x2 - 2x2</b>, <b>2x2x2x2</b>, <b>8x8</b>… Em <b>Tempo pra cada</b>, coloque os segundos (30 = 30×30). Em <b>Bate-volta com tempo</b>, os segundos do bate-volta.</p>
+      <div class="row"><input id="cNome" type="text" placeholder="Nome do modelo (ex.: Modelo da final)" style="flex:1 1 200px;width:auto"><button class="btn sm" id="cSalvar">Salvar como modelo</button></div>
+    </div>
+    <div class="grid2">
+      <div><label class="lbl" for="final">Formato da final</label><select id="final"></select></div>
+      <div style="align-self:end"><label class="chk"><input type="checkbox" id="usaTema"> Sortear tema em cada batalha</label></div>
+    </div>
+    <div>
+      <label class="lbl" for="nomes">MCs (um por linha)</label>
+      <textarea id="nomes"></textarea>
+      <label class="chk" id="prontosBox" hidden style="margin-top:8px"><input type="checkbox" id="prontos"> Times já formados (um time por linha, ex.: Kaio &amp; Duda)</label>
+      <p class="hint" id="cont" style="margin-top:6px"></p>
+    </div>
+    <div>
+      <span class="lbl">Confrontos</span>
+      <div class="seg" id="sorteio"><button data-v="1">Sortear no app</button><button data-v="0">Usar a ordem da lista</button></div>
+      <p class="hint" id="sorteioHint" style="margin-top:6px"></p>
+    </div>
+    <div>
+      <span class="lbl">Quando não fecha 4, 8, 16, 32…</span>
+      <div class="seg" id="naoFecha"><button data-v="interna">Repescagem na 1ª fase</button><button data-v="jurados">Escolhidos (jurados ou plateia)</button><button data-v="folga">Folga (passa direto)</button></div>
+      <p class="plano" id="plano" style="margin-top:8px"></p>
+    </div>
+    <div class="row"><button class="btn main" id="gerar">Gerar chave</button></div>
+    <p class="warn" id="aviso" hidden></p>
+  </section>
+
+  <section aria-labelledby="h-bat" id="secBat">
+    <h2 id="h-bat">2 · Batalha atual</h2>
+    <div id="batBody"></div>
+  </section>
+
+  <section aria-labelledby="h-chave">
+    <h2 id="h-chave">3 · Chave</h2>
+    <div class="row" style="justify-content:space-between">
+      <div class="seg" id="verChave" style="flex:0 1 260px"><button data-v="chave">Ver como chave</button><button data-v="lista">Ver em lista</button></div>
+      <p class="hint" style="flex:1 1 220px">Toque no nome pra marcar quem venceu. Toque de novo pra desfazer.</p>
+      <button class="btn sm" id="simular">Simular resultados (teste)</button>
+    </div>
+    <div id="champ"></div>
+    <div class="scroll"><div class="bracket" id="bracket"></div></div>
+  </section>
+
+  <section aria-labelledby="h-arte" id="secArte">
+    <h2 id="h-arte">4 · Artes</h2>
+    <div><span class="lbl">Tipo de arte</span><div class="seg" id="aTipo"><button data-v="div">Divulgação (antes)</button><button data-v="campeao">Campeão + chave (depois)</button></div></div>
+    <p class="hint" id="arteHint"></p>
+    <div class="grid2">
+      <div><label class="lbl" for="aEvento">Nome da batalha</label><input id="aEvento" type="text"></div>
+      <div><label class="lbl" for="aEdicao">Edição</label><input id="aEdicao" type="text" placeholder="Ex.: 12ª edição"></div>
+      <div><label class="lbl" for="aLocal">Local</label><input id="aLocal" type="text" placeholder="Ex.: Praça Central, Rolim de Moura"></div>
+      <div><label class="lbl" for="aData">Dia</label><input id="aData" type="date"></div>
+      <div><label class="lbl" for="aHora">Horário</label><input id="aHora" type="time"></div>
+      <div><label class="lbl" for="aInfos">Informações extras</label><input id="aInfos" type="text" placeholder="Ex.: Inscrições na hora · Prêmio R$ 200"></div>
+      <div id="premioBox"><label class="lbl" for="aPremio">Prêmio</label><input id="aPremio" type="text" placeholder="Ex.: R$ 200 + troféu"></div>
+      <div id="tituloBox"><label class="lbl" for="aTitulo">Título do campeão</label><input id="aTitulo" type="text"></div>
+      <div><label class="lbl" for="aRodape">Rodapé</label><input id="aRodape" type="text" placeholder="Ex.: @batalhadapraca"></div>
+    </div>
+    <div id="fotosBox">
+      <label class="lbl" for="aFotos">Fotos dos MCs (até 8, entram no cartaz como polaroid)</label>
+      <input id="aFotos" type="file" accept="image/*" multiple>
+      <div id="fotosList" class="fotos"></div>
+      <p class="hint" id="fotosMsg"></p>
+      <p class="hint">Escreva o nome igual ao da lista de MCs. Assim a foto entra sozinha na arte do campeão também.</p>
+    </div>
+    <div id="campBox">
+      <label class="lbl" for="aCampFoto">Foto do campeão (opcional)</label>
+      <div class="row"><input id="aCampFoto" type="file" accept="image/*"><button class="btn sm" id="aCampTira" hidden>Tirar foto</button></div>
+      <p class="hint">Sem foto aqui, o app usa a foto do MC com o mesmo nome, se tiver.</p>
+    </div>
+    <div>
+      <label class="lbl" for="aCapa">Capa / arte da batalha (opcional)</label>
+      <div class="row"><input id="aCapa" type="file" accept="image/*"><select id="aCapaUso" style="flex:1 1 180px;width:auto" aria-label="Como usar a capa"><option value="fundo">Usar como fundo</option><option value="cartaz">Colar como cartaz no muro</option></select><button class="btn sm" id="aCapaTira" hidden>Tirar capa</button></div>
+    </div>
+    <div><span class="lbl">Tamanho</span><div class="seg" id="aFmt"><button data-v="feed">Feed 4:5</button><button data-v="story">Stories 9:16</button><button data-v="quad">Quadrado</button></div></div>
+    <div class="grid2">
+      <div><label class="lbl" for="aLayout">Layout</label><select id="aLayout"></select></div>
+      <div><label class="lbl" for="aFundo">Muro / fundo</label><select id="aFundo"></select></div>
+      <div><label class="lbl" for="aCores">Cores</label><select id="aCores"></select></div>
+      <div><label class="lbl" for="aLetraTitulo">Letra do nome da batalha</label><select id="aLetraTitulo"></select></div>
+      <div id="letraCampBox"><label class="lbl" for="aLetraCamp">Letra do campeão</label><select id="aLetraCamp"></select></div>
+      <div><label class="lbl" for="aLetraData">Dia e horário</label><select id="aLetraData"></select></div>
+      <div id="seloBox"><label class="lbl" for="aSelo">Selo do topo</label><select id="aSelo"></select></div>
+      <div id="recorteBox"><label class="lbl" for="aRecorte">Chave na arte</label><select id="aRecorte"><option value="auto">Automático (corta se tiver 32 ou mais)</option><option value="completa">Completa</option><option value="quartas">A partir das quartas</option><option value="semis">Só semifinal e final</option></select></div>
+    </div>
+    <fieldset class="des"><legend>Desenhos e enfeites</legend><div id="aDes" style="display:contents"></div></fieldset>
+    <label class="chk"><input type="checkbox" id="aPB"> Fotos dos MCs em preto e branco (estilo lambe-lambe)</label>
+    <div>
+      <label class="lbl" for="aLogo">Logo do evento (opcional)</label>
+      <div class="row"><input id="aLogo" type="file" accept="image/*"><button class="btn sm" id="aLogoTira" hidden>Tirar logo</button></div>
+    </div>
+    <div class="row"><button class="btn main" id="aGerar">Gerar arte</button><button class="btn" id="aOutra">Outra variação</button></div>
+    <div style="display:grid;gap:6px;border-top:1px dashed var(--line);padding-top:12px">
+      <div class="row"><button class="btn" id="aBanco">Gerar banco de artes (.zip)</button><span class="hint" id="bancoMsg">Gera cerca de 70 artes com todos os layouts, letras, paletas e tamanhos, mais um catálogo com as opções de cada uma.</span></div>
+    </div>
+    <div class="art" id="arteOut" hidden>
+      <img id="arteImg" alt="Arte gerada com o campeão e a chave">
+      <p class="hint" id="arteInfo"></p>
+      <div class="row"><button class="btn main" id="aSalvar" hidden>Salvar imagem</button><span class="hint" id="salvarMsg">No celular, toque e segure a imagem pra salvar.</span></div>
+    </div>
+  </section>
+</div>
+
+<script src="js/dados-ia.js"></script>
+<script src="js/app.js"></script>
+<script src="js/arte-base.js"></script>
+<script src="js/arte-desenhos.js"></script>
+<script src="js/arte.js"></script>
