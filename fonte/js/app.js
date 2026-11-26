@@ -37,7 +37,7 @@ let S={modo:'solo',formato:'m1',final:'',custom:clone({rounds:BASE.m1.rounds,des
 let A={layoutDiv:'auto',layoutCamp:'auto',letraTitulo:'auto',letraCamp:'auto',letraData:'papel',selo:'auto',recorte:'auto',pb:false,des:null,premio:'',tipo:'div',evento:'Batalha de Rima',edicao:'',local:'',data:hoje(),hora:'19:00',infos:'',rodape:'',titulo:'',fmt:'feed',estilo:'auto',fundo:'auto',cores:'auto',capaUso:'fundo',seed:(Math.random()*1e9)|0};
 try{const s=JSON.parse(localStorage.getItem('chave-rima-v2'));if(s&&s.S){S=Object.assign(S,s.S);A=Object.assign(A,s.A||{})}}catch(e){}
 if(!S.custom||!Array.isArray(S.custom.rounds))S.custom=clone({rounds:BASE.m1.rounds,des:BASE.m1.des});
-S.meus=S.meus||{};S.draws=S.draws||{};S.hist=S.hist||[];S.rounds=S.rounds||{};S.placarTxt=S.placarTxt||{};if(S.naoFecha==='batalha')S.naoFecha='interna';if(!allFmts()[S.formato])S.formato='m1';if(S.final&&!allFmts()[S.final])S.final='';
+S.meus=S.meus||{};S.draws=S.draws||{};S.hist=S.hist||[];S.ausentes=S.ausentes||[];S.rounds=S.rounds||{};S.placarTxt=S.placarTxt||{};if(S.naoFecha==='batalha')S.naoFecha='interna';if(!allFmts()[S.formato])S.formato='m1';if(S.final&&!allFmts()[S.final])S.final='';
 const save=()=>{try{localStorage.setItem('chave-rima-v2',JSON.stringify({S,A}))}catch(e){}};
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -66,7 +66,7 @@ function montar(){
   if(t===1||S.prontos)times=base;
   else{times=[];for(let i=0;i<base.length;i+=t)times.push(base.slice(i,i+t).join(' & '));const sb=base.length%t;if(sb)aviso=`Sobrou ${sb} MC, que ficou num time incompleto: ${times[times.length-1]}.`}
   if(times.length<2){S.aviso='Coloque pelo menos 2 '+und()+'.';render();return}
-  S.E=times;S.chaveModo=S.naoFecha;S.draws={};S.hist=[];S.rounds={};S.placarTxt={};TROCA.sel=null;S.picks={};S.placar={};S.inv={};S.temas={};S.repJur=[];S.cur=null;S.aviso=aviso;stop();T_.i=null;save();render();
+  S.E=times;S.chaveModo=S.naoFecha;S.draws={};S.ausentes=[];S.hist=[];S.rounds={};S.placarTxt={};TROCA.sel=null;S.picks={};S.placar={};S.inv={};S.temas={};S.repJur=[];S.cur=null;S.aviso=aviso;stop();T_.i=null;save();render();
 }
 
 /* ---------- chave ---------- */
@@ -83,7 +83,7 @@ function build(){
       else if(j<f+g){a=E[2*f+(j-f)];const d=ready&&take(1,k);if(d)b=d[0];else need=1}
       else{const d=ready&&take(2,k);if(d){a=d[0];b=d[1]}else need=2}
       const m=mk(k,a,b);m.repNames=j<f?[]:(j<f+g?[b]:[a,b]).filter(Boolean);rep.push(...m.repNames);
-      if(need){const cnt={};ms.forEach(x=>[x.a,x.b].forEach(q=>{if(q)cnt[q]=(cnt[q]||0)+1}));m.needDraw={n:need,pool:ready?pool.slice():null,cnt}}
+      if(need){const cnt={};ms.forEach(x=>[x.a,x.b].forEach(q=>{if(q)cnt[q]=(cnt[q]||0)+1}));const aus=new Set(S.ausentes||[]);m.needDraw={n:need,pool:ready?pool.filter(x=>!aus.has(x)):null,cnt,fora:ready?pool.filter(x=>aus.has(x)):[]}}
       if(m.w)pool.push(m.w===a?b:a);else ok=false;ms.push(m)}
     out.rep=[...new Set(rep)];pre=ms;first=[]}
   else if(!useRep){P=np2(N);const m=P/2,b=P-N,bs=new Set();for(let i=0;i<b;i++)bs.add(Math.floor(i*m/b));let q=0;first=[];
@@ -123,6 +123,14 @@ function pick(k,name,placar){S.hist=(S.hist||[]).filter(x=>x!==k);if(S.picks[k]=
 /* desfaz o resultado de uma batalha (ou o último marcado) e volta pra ela */
 function desfazer(k){S.hist=(S.hist||[]).filter(x=>S.picks[x]);if(!k)k=S.hist.pop();else S.hist=S.hist.filter(x=>x!==k);if(!k||!S.picks[k])return;
   delete S.picks[k];delete S.placar[k];delete S.placarTxt[k];limpar();S.cur=k;T_.i=null;stop();save();render();$('secBat').scrollIntoView({behavior:'smooth',block:'start'})}
+/* repescado foi embora: tira ele dos sorteios e sorteia outro no lugar */
+function sorteiaDeNovo(k,nome){S.ausentes=[...new Set([...(S.ausentes||[]),nome])];const antes=S.draws[k]||[];delete S.draws[k];delete S.picks[k];delete S.placar[k];if(S.rounds)delete S.rounds[k];if(S.placarTxt)delete S.placarTxt[k];limpar();
+  const m=build().fases.flatMap(f=>f.ms).find(x=>x.k===k);S.cur=k;T_.i=null;stop();
+  if(m&&m.needDraw&&m.needDraw.pool){const fica=antes.filter(x=>x!==nome&&m.needDraw.pool.includes(x)),op=m.needDraw.pool.filter(x=>!fica.includes(x));
+    if(op.length){const novo=sorteiaRep({n:1,pool:op,cnt:m.needDraw.cnt})[0];S.draws[k]=antes.map(x=>x===nome?novo:x).filter(x=>x===novo||fica.includes(x));msgRep(`${nome} saiu do sorteio. Novo sorteado: ${novo}.`)}
+    else{S.draws[k]=fica;msgRep(`${nome} saiu do sorteio, mas não sobrou outro perdedor disponível.`)}}
+  save();render()}
+let MSG_REP='';const msgRep=t=>{MSG_REP=t};
 /* trocar MCs de lugar: toca em um nome e depois em outro */
 const TROCA={on:false,sel:null};
 function msgTroca(t){const el=$('trocaMsg');el.textContent=t;el.hidden=!t}
@@ -229,7 +237,12 @@ function render(){
     bb.innerHTML=`<div style="display:grid;gap:12px"><span class="eyebrow">${esc(fase.nome)} · Batalha ${num} · repescagem</span>
       <p style="margin:0">${nd.n===1?`<b>${esc(cur.a)}</b> ainda não rimou e enfrenta um perdedor sorteado.`:'Batalha entre dois perdedores sorteados.'}</p>
       <p class="hint" style="margin:0">O sorteio do app dá preferência a quem ainda não voltou pela repescagem.</p><div class="row"><button class="btn main" id="sortRep">Sortear ${nd.n===1?'perdedor':'os dois perdedores'}</button></div>
-      <div><span class="lbl">Ou toque ${nd.n===1?'no perdedor sorteado':'nos 2 perdedores sorteados'} fora do app</span><div class="row">${nd.pool.map(n=>`<button class="fase" data-d="${esc(n)}" aria-pressed="${sel.includes(n)}">${esc(n)}</button>`).join('')}</div></div></div>`;
+      <div><span class="lbl">Ou toque ${nd.n===1?'no perdedor sorteado':'nos 2 perdedores sorteados'} fora do app</span><div class="row">${nd.pool.map(n=>`<button class="fase" data-d="${esc(n)}" aria-pressed="${sel.includes(n)}">${esc(n)}</button>`).join('')}</div></div>
+      ${nd.pool.length<nd.n?'<p class="warn">Não sobrou perdedor disponível pra sortear. Se alguém voltou, devolva ao sorteio abaixo.</p>':''}
+      <details class="manual"${(nd.fora||[]).length?' open':''}><summary>Alguém foi embora? Tire do sorteio</summary><div class="row" style="margin-top:8px">${nd.pool.map(n=>`<button class="fase" data-fora="${esc(n)}">${esc(n)} foi embora</button>`).join('')}</div>
+        ${(nd.fora||[]).length?`<p class="hint" style="margin:8px 0 4px">Fora do sorteio (toque pra devolver):</p><div class="row">${nd.fora.map(n=>`<button class="fase" aria-pressed="true" data-volta="${esc(n)}">${esc(n)}</button>`).join('')}</div>`:''}</details></div>`;
+    bb.querySelectorAll('[data-fora]').forEach(b=>b.onclick=()=>{S.ausentes=[...new Set([...(S.ausentes||[]),b.dataset.fora])];if(S.draws[cur.k])S.draws[cur.k]=S.draws[cur.k].filter(x=>x!==b.dataset.fora);save();render()});
+    bb.querySelectorAll('[data-volta]').forEach(b=>b.onclick=()=>{S.ausentes=(S.ausentes||[]).filter(x=>x!==b.dataset.volta);save();render()});
     $('sortRep').onclick=()=>{S.draws[cur.k]=sorteiaRep(nd);T_.i=null;save();render()};
     bb.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{const n=b.dataset.d;let s=sel.slice();if(s.includes(n))s=s.filter(x=>x!==n);else if(s.length<nd.n)s.push(n);S.draws[cur.k]=s;T_.i=null;save();render()});
     artState(B);return}
@@ -244,6 +257,8 @@ function render(){
   bb.innerHTML=`<div style="display:grid;gap:14px">
     <span class="eyebrow">${esc(fase.nome)} · Batalha ${numOf[cur.k]||''}${cur.final&&S.final?' · '+esc(getFmt(S.final).nome):''}</span>
     <div class="vs"><div class="mc">${esc(Am)}</div><div class="x">VS</div><div class="mc">${esc(Bm)}</div></div>
+    ${MSG_REP?`<p class="warn">${esc(MSG_REP)}</p>`:''}
+    ${(cur.repNames||[]).length&&S.draws[cur.k]?`<div><span class="lbl">Repescado não está mais aí?</span><div class="row">${cur.repNames.map(n=>`<button class="btn sm" data-aus="${esc(n)}">${esc(n)} foi embora · sortear outro</button>`).join('')}</div></div>`:''}
     <div><span class="lbl">Quem começa</span><div class="row"><div class="seg" style="flex:1 1 220px"><button data-ini="a" aria-pressed="true">${esc(Am)}</button><button data-ini="b" aria-pressed="false">${esc(Bm)}</button></div><button class="btn sm" id="sortCome">Sortear</button></div></div>
     ${usaTema?`<div class="tema"><div><label class="lbl" for="temaIn">Tema</label><input id="temaIn" type="text" placeholder="Digite ou sorteie" value="${esc(S.temas[cur.k]||'')}"></div><button class="btn" id="sortTema">Sortear tema</button></div>`:''}
     <div class="fases">${rounds.map((rd,ri)=>`<div class="rd"><b>${rd.r}</b><div class="row">${rd.f.map(x=>{flat.push(x);const i=flat.length-1;
@@ -262,6 +277,7 @@ function render(){
   bb.querySelectorAll('[data-rv]').forEach(b=>b.onclick=()=>{S.rounds=S.rounds||{};const arr=S.rounds[cur.k]=S.rounds[cur.k]||[],i=+b.dataset.rv;arr[i]=arr[i]===b.dataset.n?null:b.dataset.n;S.cur=cur.k;save();render()});
   if(res)$('confirmaRes').onclick=()=>{S.placarTxt=S.placarTxt||{};S.placarTxt[cur.k]=res.txt;pick(cur.k,res.w,res.pl)};
   bb.querySelectorAll('[data-desfult]').forEach(b=>b.onclick=()=>desfazer());
+  bb.querySelectorAll('[data-aus]').forEach(b=>b.onclick=()=>sorteiaDeNovo(cur.k,b.dataset.aus));MSG_REP='';
   $('play').onclick=()=>{destravaSom();if(T_.int)stop();else{if(T_.left===0)T_.left=T_.tot;if(!T_.tot)return;const t=document.querySelector('.timer');if(t)t.classList.remove('piscar');T_.fim=Date.now()+T_.left*1000;T_.int=setInterval(tick,200);telaAcesa(true)}drawClock()};
   $('testeSom').onclick=()=>{destravaSom();setTimeout(()=>fimTempo(),150)};
   ['somOff','vibrarOff','aviso10Off'].forEach(k=>{const el=$(k);el.checked=!S[k];el.onchange=()=>{S[k]=!el.checked;save()}});
