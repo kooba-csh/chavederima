@@ -113,6 +113,11 @@ textarea{min-height:150px;resize:vertical}
 .bracket.lista .slot{font-size:16px;min-height:48px}
 .des{border:1px solid var(--line);border-radius:6px;padding:10px 12px;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:6px 12px}
 .des legend{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:0 4px}
+.slot.troca{outline:2px dashed var(--line);outline-offset:-4px}
+.slot.sel{outline:3px solid var(--tape);outline-offset:-4px;background:var(--tape);color:var(--tape-ink)}
+#trocaBtn[aria-pressed="true"]{background:var(--tape);border-color:var(--tape);color:var(--tape-ink)}
+.resultado{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;background:var(--soft);border:2px solid var(--spray);border-radius:6px;padding:10px 12px;font-size:16px}
+details.manual summary{cursor:pointer;font-size:13px;color:var(--muted);font-weight:600;padding:6px 0}
 .ph{padding:10px;font-size:13px;color:var(--muted);font-style:italic}
 .champ{text-align:center;display:grid;gap:4px;padding:6px 0}
 .champ .n{font-family:var(--display);font-size:clamp(24px,7vw,40px);overflow-wrap:anywhere}
@@ -190,15 +195,16 @@ textarea{min-height:150px;resize:vertical}
     <div class="row" style="justify-content:space-between">
       <div class="seg" id="verChave" style="flex:0 1 260px"><button data-v="chave">Ver como chave</button><button data-v="lista">Ver em lista</button></div>
       <p class="hint" style="flex:1 1 220px">Toque no nome pra marcar quem venceu. Toque de novo pra desfazer.</p>
-      <button class="btn sm" id="simular">Simular resultados (teste)</button>
+      <div class="row" style="gap:8px"><button class="btn sm" id="desfazer">↩ Desfazer último</button><button class="btn sm" id="trocaBtn" aria-pressed="false">Trocar MCs de lugar</button><button class="btn sm" id="simular">Simular resultados (teste)</button></div>
     </div>
+    <p class="warn" id="trocaMsg" hidden></p>
     <div id="champ"></div>
     <div class="scroll"><div class="bracket" id="bracket"></div></div>
   </section>
 
   <section aria-labelledby="h-arte" id="secArte">
     <h2 id="h-arte">4 · Artes</h2>
-    <div><span class="lbl">Tipo de arte</span><div class="seg" id="aTipo"><button data-v="div">Divulgação (antes)</button><button data-v="campeao">Campeão + chave (depois)</button></div></div>
+    <div><span class="lbl">Tipo de arte</span><div class="seg" id="aTipo"><button data-v="div">Divulgação (antes)</button><button data-v="chave">Chave (confrontos)</button><button data-v="campeao">Campeão + chave (depois)</button></div></div>
     <p class="hint" id="arteHint"></p>
     <div class="grid2">
       <div><label class="lbl" for="aEvento">Nome da batalha</label><input id="aEvento" type="text"></div>

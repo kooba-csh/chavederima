@@ -37,7 +37,7 @@ let S={modo:'solo',formato:'m1',final:'',custom:clone({rounds:BASE.m1.rounds,des
 let A={layoutDiv:'auto',layoutCamp:'auto',letraTitulo:'auto',letraCamp:'auto',letraData:'papel',selo:'auto',recorte:'auto',pb:false,des:null,premio:'',tipo:'div',evento:'Batalha de Rima',edicao:'',local:'',data:hoje(),hora:'19:00',infos:'',rodape:'',titulo:'',fmt:'feed',estilo:'auto',fundo:'auto',cores:'auto',capaUso:'fundo',seed:(Math.random()*1e9)|0};
 try{const s=JSON.parse(localStorage.getItem('chave-rima-v2'));if(s&&s.S){S=Object.assign(S,s.S);A=Object.assign(A,s.A||{})}}catch(e){}
 if(!S.custom||!Array.isArray(S.custom.rounds))S.custom=clone({rounds:BASE.m1.rounds,des:BASE.m1.des});
-S.meus=S.meus||{};S.draws=S.draws||{};if(S.naoFecha==='batalha')S.naoFecha='interna';if(!allFmts()[S.formato])S.formato='m1';if(S.final&&!allFmts()[S.final])S.final='';
+S.meus=S.meus||{};S.draws=S.draws||{};S.hist=S.hist||[];S.rounds=S.rounds||{};S.placarTxt=S.placarTxt||{};if(S.naoFecha==='batalha')S.naoFecha='interna';if(!allFmts()[S.formato])S.formato='m1';if(S.final&&!allFmts()[S.final])S.final='';
 const save=()=>{try{localStorage.setItem('chave-rima-v2',JSON.stringify({S,A}))}catch(e){}};
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -66,7 +66,7 @@ function montar(){
   if(t===1||S.prontos)times=base;
   else{times=[];for(let i=0;i<base.length;i+=t)times.push(base.slice(i,i+t).join(' & '));const sb=base.length%t;if(sb)aviso=`Sobrou ${sb} MC, que ficou num time incompleto: ${times[times.length-1]}.`}
   if(times.length<2){S.aviso='Coloque pelo menos 2 '+und()+'.';render();return}
-  S.E=times;S.chaveModo=S.naoFecha;S.draws={};S.picks={};S.placar={};S.inv={};S.temas={};S.repJur=[];S.cur=null;S.aviso=aviso;stop();T_.i=null;save();render();
+  S.E=times;S.chaveModo=S.naoFecha;S.draws={};S.hist=[];S.rounds={};S.placarTxt={};TROCA.sel=null;S.picks={};S.placar={};S.inv={};S.temas={};S.repJur=[];S.cur=null;S.aviso=aviso;stop();T_.i=null;save();render();
 }
 
 /* ---------- chave ---------- */
@@ -118,10 +118,26 @@ function build(){
 const sorteiaRep=nd=>shuffle(nd.pool).sort((x,y)=>(nd.cnt[x]||0)-(nd.cnt[y]||0)).slice(0,nd.n);
 const pendentes=B=>B.fases.flatMap(f=>f.ms).filter(m=>(m.a&&m.b&&!m.w&&!m.bye)||(m.needDraw&&m.needDraw.pool));
 function limpar(){for(let g=0;g<30;g++){const B=build();let ch=false;B.fases.forEach(f=>f.ms.forEach(m=>{const p=S.picks[m.k];if(p&&!m.bye&&!(m.a&&m.b&&(p===m.a||p===m.b))){delete S.picks[m.k];ch=true}}));if(!ch)break}}
-function pick(k,name,placar){if(S.picks[k]===name&&placar===undefined){delete S.picks[k];delete S.placar[k]}else{S.picks[k]=name;if(placar)S.placar[k]=placar;else delete S.placar[k]}
+function pick(k,name,placar){S.hist=(S.hist||[]).filter(x=>x!==k);if(S.picks[k]===name&&placar===undefined){delete S.picks[k];delete S.placar[k];delete S.placarTxt[k]}else{S.picks[k]=name;if(placar)S.placar[k]=placar;else delete S.placar[k];S.hist.push(k)}
   limpar();S.cur=null;T_.i=null;stop();save();render()}
+/* desfaz o resultado de uma batalha (ou o último marcado) e volta pra ela */
+function desfazer(k){S.hist=(S.hist||[]).filter(x=>S.picks[x]);if(!k)k=S.hist.pop();else S.hist=S.hist.filter(x=>x!==k);if(!k||!S.picks[k])return;
+  delete S.picks[k];delete S.placar[k];delete S.placarTxt[k];limpar();S.cur=k;T_.i=null;stop();save();render();$('secBat').scrollIntoView({behavior:'smooth',block:'start'})}
+/* trocar MCs de lugar: toca em um nome e depois em outro */
+const TROCA={on:false,sel:null};
+function msgTroca(t){const el=$('trocaMsg');el.textContent=t;el.hidden=!t}
+function trocaClique(m,n){const rep=(m.repNames||[]).includes(n),novo=!rep&&(m.k.startsWith('p-')||m.k.startsWith('m0-'))&&S.E.includes(n);
+  if(!rep&&!novo){msgTroca('Só dá pra trocar na 1ª fase: MC com MC, ou repescado com repescado.');return}
+  const it={k:m.k,n,rep};if(!TROCA.sel){TROCA.sel=it;msgTroca(`${n} selecionado. Agora toque em quem vai trocar de lugar com ele.`);render();return}
+  const a=TROCA.sel;TROCA.sel=null;if(a.n===n){msgTroca('Troca cancelada.');render();return}
+  if(a.rep!==it.rep){msgTroca('Troque MC novo com MC novo, ou repescado com repescado.');render();return}
+  const tinha=[a.k,it.k].some(k=>S.picks[k]);
+  if(!a.rep){const i=S.E.indexOf(a.n),j=S.E.indexOf(n);[S.E[i],S.E[j]]=[S.E[j],S.E[i]]}
+  else{S.draws[a.k]=(S.draws[a.k]||[]).map(x=>x===a.n?n:x===n?a.n:x);if(it.k!==a.k)S.draws[it.k]=(S.draws[it.k]||[]).map(x=>x===n?a.n:x)}
+  [a.k,it.k].forEach(k=>{delete S.picks[k];delete S.placar[k];delete S.placarTxt[k];if(S.rounds)delete S.rounds[k]});limpar();
+  msgTroca(`${a.n} e ${n} trocaram de lugar.`+(tinha?' O resultado dessas batalhas foi apagado.':''));save();render()}
 function simular(){for(let g=0;g<400;g++){const B=build();if(B.needJur){S.repJur=shuffle(B.losers).slice(0,B.repNeed);continue}
-  const p=pendentes(B);if(!p.length)break;const m=p[0];if(m.needDraw){S.draws[m.k]=sorteiaRep(m.needDraw);continue}S.picks[m.k]=Math.random()<.5?m.a:m.b;S.placar[m.k]=Math.random()<.65?'direto':'desempate'}
+  const p=pendentes(B);if(!p.length)break;const m=p[0];if(m.needDraw){S.draws[m.k]=sorteiaRep(m.needDraw);continue}S.picks[m.k]=Math.random()<.5?m.a:m.b;S.placar[m.k]=Math.random()<.65?'direto':'desempate';S.hist=(S.hist||[]).concat(m.k)}
   S.cur=null;T_.i=null;stop();save();render()}
 
 /* ---------- cronômetro ---------- */
@@ -183,12 +199,15 @@ function render(){
       col.appendChild(d)}
     else if(f.ph){const d=document.createElement('div');d.className='match';d.innerHTML=`<div class="ph">${esc(f.ph)}</div>`;col.appendChild(d)}
     f.ms.forEach(m=>{const d=document.createElement('div');const isCur=cur&&cur.k===m.k;d.className='match'+(isCur?' cur':'');
-      let head;if(m.bye)head='<span>'+(f.tipo==='m'?'Folga':'Passa direto')+'</span>';else{num++;numOf[m.k]=num;head=`<span>Batalha ${num}${S.placar[m.k]==='desempate'&&m.w?' · 3º':''}</span>`+(m.a&&m.b&&!m.w&&!isCur?`<button data-cur="${m.k}">Chamar</button>`:'')}
+      let head;if(m.bye)head='<span>'+(f.tipo==='m'?'Folga':'Passa direto')+'</span>';else{num++;numOf[m.k]=num;const pt=S.placarTxt&&S.placarTxt[m.k];head=`<span>Batalha ${num}${m.w&&pt?' · '+pt:S.placar[m.k]==='desempate'&&m.w?' · 3º':''}</span><span style="display:flex;gap:10px">`+(m.w?`<button data-desf="${m.k}">Desfazer</button>`:'')+(!m.w&&(m.repNames||[]).length&&S.draws[m.k]?`<button data-tsort="${m.k}">Trocar sorteio</button>`:'')+(m.a&&m.b&&!m.w&&!isCur?`<button data-cur="${m.k}">Chamar</button>`:'')+'</span>'}
       d.innerHTML=`<div class="mh">${head}</div>`+(m.bye?`<button class="slot w" disabled style="color:var(--spray-ink);font-style:normal;font-weight:600">${esc(m.a)}</button>`:
-        [m.a,m.b].map(x=>x?`<button class="slot${m.w?(m.w===x?' w':' l'):''}" data-k="${m.k}" data-n="${esc(x)}">${esc(x)}${(m.repNames||[]).includes(x)?' <small>· repescado</small>':''}</button>`:`<button class="slot" disabled>${m.needDraw?'perdedor sorteado':'a definir'}</button>`).join(''));
+        [m.a,m.b].map(x=>x?`<button class="slot${m.w?(m.w===x?' w':' l'):''}${TROCA.on?' troca':''}${TROCA.sel&&TROCA.sel.k===m.k&&TROCA.sel.n===x?' sel':''}" data-k="${m.k}" data-n="${esc(x)}">${esc(x)}${(m.repNames||[]).includes(x)?' <small>· repescado</small>':''}</button>`:`<button class="slot" disabled>${m.needDraw?'perdedor sorteado':'a definir'}</button>`).join(''));
       col.appendChild(d)});
     br.appendChild(col)});
-  br.querySelectorAll('.slot[data-k]').forEach(b=>b.onclick=()=>{const m=B.fases.flatMap(f=>f.ms).find(x=>x.k===b.dataset.k);if(m&&m.a&&m.b)pick(b.dataset.k,b.dataset.n)});
+  br.querySelectorAll('.slot[data-k]').forEach(b=>b.onclick=()=>{const m=B.fases.flatMap(f=>f.ms).find(x=>x.k===b.dataset.k);if(!m)return;if(TROCA.on){trocaClique(m,b.dataset.n);return}if(m.a&&m.b)pick(b.dataset.k,b.dataset.n)});
+  br.querySelectorAll('[data-desf]').forEach(b=>b.onclick=()=>desfazer(b.dataset.desf));
+  br.querySelectorAll('[data-tsort]').forEach(b=>b.onclick=()=>{delete S.draws[b.dataset.tsort];limpar();S.cur=b.dataset.tsort;save();render();$('secBat').scrollIntoView({behavior:'smooth',block:'start'})});
+  $('desfazer').disabled=!(S.hist||[]).some(k=>S.picks[k]);$('trocaBtn').setAttribute('aria-pressed',TROCA.on);$('trocaBtn').textContent=TROCA.on?'Terminar trocas':'Trocar MCs de lugar';
   br.querySelectorAll('[data-cur]').forEach(b=>b.onclick=()=>{S.cur=b.dataset.cur;T_.i=null;stop();save();render();$('secBat').scrollIntoView({behavior:'smooth',block:'start'})});
   br.querySelectorAll('[data-refaz]').forEach(b=>b.onclick=()=>{S.repJur=[];limpar();save();render()});
   $('champ').innerHTML=B.champ?`<div class="champ"><span class="lbl">${esc(tituloAuto())}</span><div class="n"><span>${esc(B.champ)}</span></div><div class="row" style="justify-content:center"><button class="btn main sm" id="irArte">Gerar arte do campeão</button></div></div>`:'';
@@ -203,7 +222,8 @@ function render(){
     bb.querySelectorAll('[data-j]').forEach(b=>b.onclick=()=>{const n=b.dataset.j;let s=S.repJur.filter(x=>B.losers.includes(x));
       if(s.includes(n))s=s.filter(x=>x!==n);else if(s.length<B.repNeed)s.push(n);S.repJur=s;save();render()});
     artState(B);return}
-  if(!cur){bb.innerHTML='<p class="hint">'+(S.E.length?(B.champ?'Chave encerrada. Gere a arte do campeão lá embaixo.':'Nenhuma batalha pendente.'):'Gere a chave primeiro.')+'</p>';artState(B);return}
+  const podeDesf=(S.hist||[]).some(k=>S.picks[k]),btnDesf=podeDesf?'<button class="btn sm" data-desfult>↩ Desfazer último resultado</button>':'';
+  if(!cur){bb.innerHTML='<div style="display:grid;gap:10px"><p class="hint">'+(S.E.length?(B.champ?'Chave encerrada. Gere a arte do campeão lá embaixo.':'Nenhuma batalha pendente.'):'Gere a chave primeiro.')+'</p><div class="row">'+btnDesf+'</div></div>';bb.querySelectorAll('[data-desfult]').forEach(b=>b.onclick=()=>desfazer());artState(B);return}
   const fase=B.fases.find(f=>f.ms.includes(cur));
   if(cur.needDraw){const nd=cur.needDraw,sel=(S.draws[cur.k]||[]).filter(x=>nd.pool.includes(x)),num=B.fases.flatMap(f=>f.ms).filter(m=>!m.bye).indexOf(cur)+1;
     bb.innerHTML=`<div style="display:grid;gap:12px"><span class="eyebrow">${esc(fase.nome)} · Batalha ${num} · repescagem</span>
@@ -216,23 +236,32 @@ function render(){
   let[Am,Bm]=[cur.a,cur.b];if(S.inv[cur.k])[Am,Bm]=[Bm,Am];
   const f=getFmt(cur.final&&S.final?S.final:S.formato);const rounds=fasesDe(f,Am,Bm);const flat=[];
   const usaTema=S.usaTema||!!f.tema;
+  const rv=(S.rounds&&S.rounds[cur.k])||[],nN=f.rounds.length,need=Math.floor(nN/2)+1;let wa=0,wbb=0;for(let i=0;i<nN;i++){if(rv[i]===Am)wa++;else if(rv[i]===Bm)wbb++}
+  const empate=f.des&&wa+wbb===nN&&wa===wbb;let res=null;
+  if(wa>=need)res={w:Am,pl:'direto',txt:wa+'×'+wbb};else if(wbb>=need)res={w:Bm,pl:'direto',txt:wbb+'×'+wa};else if(empate&&(rv[nN]===Am||rv[nN]===Bm))res={w:rv[nN],pl:'desempate',txt:(wa+1)+'×'+wa};
+  const rvBtns=ri=>{const ehDes=f.des&&ri===nN;if(ehDes&&!empate)return'<p class="hint" style="margin:0">Só se empatar.</p>';return`<div class="row" style="gap:6px"><span class="hint">Venceu o round:</span>${[Am,Bm].map(n=>`<button class="fase" data-rv="${ri}" data-n="${esc(n)}" aria-pressed="${rv[ri]===n}">${esc(n)}</button>`).join('')}</div>`};
   const wb=n=>f.des?`<button class="btn" data-w="${esc(n)}" data-p="direto">Venceu direto</button><button class="btn" data-w="${esc(n)}" data-p="desempate">Venceu no ${f.rounds.length+1}º</button>`:`<button class="btn" data-w="${esc(n)}" data-p="direto">Venceu</button>`;
   bb.innerHTML=`<div style="display:grid;gap:14px">
     <span class="eyebrow">${esc(fase.nome)} · Batalha ${numOf[cur.k]||''}${cur.final&&S.final?' · '+esc(getFmt(S.final).nome):''}</span>
     <div class="vs"><div class="mc">${esc(Am)}</div><div class="x">VS</div><div class="mc">${esc(Bm)}</div></div>
     <div><span class="lbl">Quem começa</span><div class="row"><div class="seg" style="flex:1 1 220px"><button data-ini="a" aria-pressed="true">${esc(Am)}</button><button data-ini="b" aria-pressed="false">${esc(Bm)}</button></div><button class="btn sm" id="sortCome">Sortear</button></div></div>
     ${usaTema?`<div class="tema"><div><label class="lbl" for="temaIn">Tema</label><input id="temaIn" type="text" placeholder="Digite ou sorteie" value="${esc(S.temas[cur.k]||'')}"></div><button class="btn" id="sortTema">Sortear tema</button></div>`:''}
-    <div class="fases">${rounds.map(rd=>`<div class="rd"><b>${rd.r}</b><div class="row">${rd.f.map(x=>{flat.push(x);const i=flat.length-1;
-      return`<button class="fase" data-i="${i}">${esc(x.t)} · ${x.s?x.s+'s':'sem tempo'}</button>`}).join('')}</div></div>`).join('')}</div>
+    <div class="fases">${rounds.map((rd,ri)=>`<div class="rd"><b>${rd.r}</b><div class="row">${rd.f.map(x=>{flat.push(x);const i=flat.length-1;
+      return`<button class="fase" data-i="${i}">${esc(x.t)} · ${x.s?x.s+'s':'sem tempo'}</button>`}).join('')}</div>${rvBtns(ri)}</div>`).join('')}</div>
     <div class="timer"><div class="who" id="who"></div><div class="clock" id="clock">0:00</div>
       <div class="row" style="justify-content:center"><button class="btn main" id="play">Começar</button><button class="btn" id="zera">Zerar</button><button class="btn" id="prox">Próximo</button></div>
       <div class="row" style="justify-content:center;gap:14px"><label class="chk"><input type="checkbox" id="somOff"> Som</label><label class="chk"><input type="checkbox" id="vibrarOff"> Vibrar</label><label class="chk"><input type="checkbox" id="aviso10Off"> Aviso nos 10 s</label><button class="btn sm" id="testeSom">Testar som</button></div></div>
-    <div class="wins"><div><b>${esc(Am)}</b>${wb(Am)}</div><div><b>${esc(Bm)}</b>${wb(Bm)}</div></div></div>`;
+    ${res?`<div class="resultado"><span><b>${esc(res.w)}</b> venceu ${res.txt}${res.pl==='desempate'?' no desempate':''}</span><button class="btn main" id="confirmaRes">Confirmar resultado</button></div>`:''}
+    <details class="manual"${res?'':' open'}><summary>Marcar o vencedor direto (sem os rounds)</summary><div class="wins" style="margin-top:10px"><div><b>${esc(Am)}</b>${wb(Am)}</div><div><b>${esc(Bm)}</b>${wb(Bm)}</div></div></details>
+    <div class="row">${btnDesf}</div></div>`;
   const setFase=i=>{stop();T_.i=i;const x=flat[i];T_.tot=T_.left=x.s||0;
     bb.querySelectorAll('.fase[data-i]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.i===i));
     $('who').textContent=x.t+(x.s?'':' · sem cronômetro, conte as rimas');$('play').disabled=!x.s;drawClock()};
   bb.querySelectorAll('.fase[data-i]').forEach(b=>b.onclick=()=>setFase(+b.dataset.i));
-  setFase(T_.i!=null&&T_.i<flat.length?T_.i:0);
+  if(T_.int&&T_.i!=null&&T_.i<flat.length){bb.querySelectorAll('.fase[data-i]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.i===T_.i));$('who').textContent=flat[T_.i].t;drawClock()}else setFase(T_.i!=null&&T_.i<flat.length?T_.i:0);
+  bb.querySelectorAll('[data-rv]').forEach(b=>b.onclick=()=>{S.rounds=S.rounds||{};const arr=S.rounds[cur.k]=S.rounds[cur.k]||[],i=+b.dataset.rv;arr[i]=arr[i]===b.dataset.n?null:b.dataset.n;S.cur=cur.k;save();render()});
+  if(res)$('confirmaRes').onclick=()=>{S.placarTxt=S.placarTxt||{};S.placarTxt[cur.k]=res.txt;pick(cur.k,res.w,res.pl)};
+  bb.querySelectorAll('[data-desfult]').forEach(b=>b.onclick=()=>desfazer());
   $('play').onclick=()=>{destravaSom();if(T_.int)stop();else{if(T_.left===0)T_.left=T_.tot;if(!T_.tot)return;const t=document.querySelector('.timer');if(t)t.classList.remove('piscar');T_.fim=Date.now()+T_.left*1000;T_.int=setInterval(tick,200);telaAcesa(true)}drawClock()};
   $('testeSom').onclick=()=>{destravaSom();setTimeout(()=>fimTempo(),150)};
   ['somOff','vibrarOff','aviso10Off'].forEach(k=>{const el=$(k);el.checked=!S[k];el.onchange=()=>{S[k]=!el.checked;save()}});
@@ -242,7 +271,7 @@ function render(){
   bb.querySelectorAll('[data-ini]').forEach(b=>b.onclick=()=>setIni(b.dataset.ini));
   $('sortCome').onclick=()=>{S.inv[cur.k]=Math.random()<.5;S.cur=cur.k;T_.i=null;stop();save();render()};
   if(usaTema){$('temaIn').oninput=e=>{S.temas[cur.k]=e.target.value;save()};$('sortTema').onclick=()=>{const usados=Object.values(S.temas);let op=TEMAS.filter(t=>!usados.includes(t));if(!op.length)op=TEMAS;S.temas[cur.k]=op[Math.random()*op.length|0];$('temaIn').value=S.temas[cur.k];save()}}
-  bb.querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>pick(cur.k,b.dataset.w,b.dataset.p));
+  bb.querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{if(S.placarTxt)delete S.placarTxt[cur.k];pick(cur.k,b.dataset.w,b.dataset.p)});
   artState(B);
 }
 function contar(){const n=qtd();$('cont').textContent=n+' '+und()+(S.exemplo?' · nomes de exemplo, troque pelos seus':'');$('plano').textContent=plano(n,S.naoFecha)}
@@ -285,5 +314,7 @@ $('nomes').oninput=e=>{S.nomes=e.target.value;S.exemplo=false;save();contar()};
 $('prontos').onchange=e=>{S.prontos=e.target.checked;save();render()};
 $('gerar').onclick=()=>{S.exemplo=S.exemplo&&S.nomes===EX.join('\n');montar()};
 $('simular').onclick=simular;
+$('desfazer').onclick=()=>desfazer();
+$('trocaBtn').onclick=()=>{TROCA.on=!TROCA.on;TROCA.sel=null;msgTroca(TROCA.on?'Toque em um MC e depois em outro pra trocar os dois de lugar. Funciona na 1ª fase.':'');render()};
 document.querySelectorAll('#verChave button').forEach(b=>b.onclick=()=>{S.ver=b.dataset.v;save();render()});
 
